@@ -1,0 +1,14 @@
+{
+  "name": "k-means-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MaetDol/k-means-js.git",
+  "author": "Maetdol <rndka9@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jest": "^26.4.1"
+  },
+  "scripts": {
+    "test": "jest --verbose false --watch"
+  }
+}
