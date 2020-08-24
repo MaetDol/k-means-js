@@ -1,19 +1,21 @@
-class K_means {
+class Kmeans {
 
   constructor({
     tolerance = 0.01,
     max_iteration = 300,
     k = 0,
-    axis = 1,
+    dimension: dims = 1,
     datas = [],
-  }) {
+  }={}) {
 
     this.tolerance = tolerance;
     this.max_iteration = max_iteration;
     this.k = k;
 
-    this.axis = axis > 0 ? axis : 1;
+    this.dims = dims > 0 ? dims : 1;
     this.datas = datas;
+
+    this.centroids = [];
   }
 
   set datas( datas ) {
@@ -24,17 +26,67 @@ class K_means {
     return this._datas;
   }
 
-  set axis( axis ) {
-    this._axis = axis > 0 ? axis : 1;
+  set dims( dims ) {
+    this._dims = dims > 0 ? dims : 1;
   }
 
-  get axis() {
-    return axis;
+  get dims() {
+    return dims;
+  }
+
+  distanceTo( centroid ) {
+    return this.datas.map( d => (d - centroid)**2 );
+  }
+
+  min( a, b ) {
+    const [longArr, shortArr] = a.length > b.length ? [a, b] : [b, a];
+    return longArr.map((val, idx) => 
+      Math.min( 
+        val, 
+        shortArr.length > idx ? shortArr[idx] : val 
+      )
+    );
+  }
+
+  sum( a ) {
+    return a.reduce((acc, val) => acc + val, 0);
+  }
+
+  weightedRandom( weights ) {
+    const weightsSum = this.sum( weights ),
+          r = Math.random();
+    let sum = 0;
+    for( let i=0; i < weights.length; i++ ) {
+      sum += weights[i] / weightsSum;
+      if( r <= sum ) {
+        return i;
+      }
+    }
+  }
+
+  kmeansPP() {
+    // Pick one randomly
+    let centroids = [this.datas[0]];
+
+    let minDistances = this.distanceTo( centroids[0] );
+    for( let i=0; i < this.k-1; i++ ) {
+      // Get nearest distances from centroids
+      const distances = 
+        this.min( minDistances, this.distanceTo( centroids[i] ));
+      // Select new centroid based on probability proportional to size
+      const newCentroid = 
+        this.datas[this.weightedRandom( distances )];
+
+      centroids.push( newCentroid );
+      minDistances = distances;
+    }
+
+    return centroids;
   }
 
   fit() {
-    // Init centroids with any value
-    let centroids = this.datas.slice( 0, this.k );
+    // Init centroids using kmeans++
+    let centroids = this.kmeansPP();
 
     for( let iterate=0; iterate < this.max_iteration; iterate++ ) {
       
@@ -78,4 +130,4 @@ class K_means {
 
 }
 
-module.exports = K_means;
+module.exports = Kmeans;
