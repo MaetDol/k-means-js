@@ -16,7 +16,37 @@ class Kmeans {
     this.datas = datas;
 
     this.centroids = [];
+    this.initSub();
   }
+
+  initSub() {
+    switch( this.dims ) {
+      case 1:
+        this.add = (a, b) => a + b;
+        this.sub = (a, b) => (a - b)**2;
+        this.divider = (a, b) => a / b;
+        this.ZERO_POINT = 0;
+        break;
+
+      case 2:
+        this.add = ([x, y], [x2, y2=y2]) => [x+x2, y+y2];
+        this.sub = ([x, y], [x2, y2=x2]) => (x-x2)**2 + (y-y2)**2;
+        this.divider = ([x, y], [x2, y2=x2]) => [x/x2, y/y2];
+        this.ZERO_POINT = [0, 0];
+        break;
+
+      case 3:
+        this.add = ([x, y, z], [x2, y2=x2, z2=x2]) => [x+x2, y+y2, z+z2];
+        this.sub = ([x, y, z], [x2, y2=x2, z2=x2]) => (x-x2)**2 + (y-y2)**2 + (z-z2)**2;
+        this.divider = ([x, y, z], [x2, y2=x2, z2=x2]) => [x/x2, y/y2, z/z2];
+        this.ZERO_POINT = [0, 0, 0];
+        break;
+    }
+  }
+
+  sub() {}
+  add() {}
+  divider() {}
 
   set datas( datas ) {
     this._datas = datas;
@@ -28,24 +58,23 @@ class Kmeans {
 
   set dims( dims ) {
     this._dims = dims > 0 ? dims : 1;
+    this.initSub();
   }
 
   get dims() {
-    return dims;
+    return this._dims;
   }
 
   distanceTo( centroid ) {
-    return this.datas.map( d => (d - centroid)**2 );
+    return this.datas.map( d => this.sub( d, centroid ));
   }
 
   min( a, b ) {
     const [longArr, shortArr] = a.length > b.length ? [a, b] : [b, a];
-    return longArr.map((val, idx) => 
-      Math.min( 
+    return longArr.map((val, idx) => Math.min(
         val, 
         shortArr.length > idx ? shortArr[idx] : val 
-      )
-    );
+    ));
   }
 
   sum( a ) {
@@ -90,6 +119,7 @@ class Kmeans {
 
     for( let iterate=0; iterate < this.max_iteration; iterate++ ) {
       
+      // Generate k empty arrays
       const classifications = Array.from({length: this.k}, ()=>[]);
       // Clustering
       this.datas.forEach( data => {
@@ -100,12 +130,10 @@ class Kmeans {
       let inTolerance = true;
       const previousCentroids = [...centroids];
       // Assign centroids as average of cluster
-      centroids = classifications.map( clss => 
-        clss.reduce((sum, val) => sum + val, 0) / clss.length
-      );
+      centroids = classifications.map( cls => this.average( cls ));
 
       for( let i=0; i < previousCentroids.length; i++ ) {
-        const difference = Math.abs( (previousCentroids[i] - centroids[i]) / previousCentroids[i] * 100 );
+        const difference = this.difference( previousCentroids[i], centroids[i] );
         if( difference > this.tolerance ) {
           inTolerance = false;
           break;
@@ -119,15 +147,29 @@ class Kmeans {
     return centroids;
   }
 
-  nearestOf( data, centroids ) {
-    const distances = centroids.map((c, idx) => ({
-      centroidIndex: idx, 
-      value: Math.abs( data - c ) 
-    }));
-    const nearest = distances.sort((a, b) => a.value - b.value )[0];
-    return nearest;
+  difference( data1, data2 ) {
+    return this.sub( data1, data2 ) / this.maxData * 100;
   }
 
+  average( arr ) {
+    let length = arr.length;
+    if( this.dims !== 1 ) {
+      length = Array.from( this.ZERO_POINT, ()=> arr.length );
+    }
+    return this.divider( arr.reduce((sum, val) => this.add( sum, val )), length );
+  }
+
+  nearestOf( data, centroids ) {
+    let nearest = { value: Number.MAX_SAFE_INTEGER };
+    centroids.forEach((c, idx) => {
+      const d = {
+        centroidIndex: idx, 
+        value: this.sub( data, c )
+      };
+      nearest = nearest.value > d.value ? d : nearest;
+    });
+    return nearest;
+  }
 }
 
 module.exports = Kmeans;
