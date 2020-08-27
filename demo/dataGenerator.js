@@ -2,9 +2,9 @@ import Kmeans from './kmeans.js';
 
 const option = {
   dims: 1,
-  maxValue: 100,
+  maxValue: 255,
   centerCount: 3,
-  spreads: [0.1, 0.1, 0.1],
+  spreads: [0.18, 0.3, 0.05],
   clusterDataCount: 100,
 };
 const sampleDatas = {
@@ -25,10 +25,10 @@ function generateDatas({
 }) {
   const stdev = stDev( maxValue );
   const centroids = [];
-  const weights = Array.from({ length: centerCount }, () => {
+  const weights = Array.from({ length: centerCount }, (_, idx) => {
     const randomPosition = nRandom( dims, r => r * maxValue );
     centroids.push( randomPosition );
-    return Array.from( randomPosition, (r, idx) => {
+    return Array.from( randomPosition, (r) => {
       const w = [];
       for( let i=0; i < maxValue; i++ ) {
         w[i] = ndf( i, r, stdev * spreads[idx] );
