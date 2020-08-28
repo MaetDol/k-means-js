@@ -6,10 +6,12 @@ class Kmeans {
     k = 0,
     dimension: dims = 1,
     datas = [],
+    usePPS = true,
   }={}) {
 
     this.tolerance = tolerance;
     this.max_iteration = max_iteration;
+    this.usePPS = usePPS;
     this.k = k;
 
     this.dims = dims > 0 ? dims : 1;
@@ -93,9 +95,15 @@ class Kmeans {
     }
   }
 
+  indexOfMax( arr ) {
+    return arr.reduce((max, val, idx, arr) =>
+      arr[max] < val ? idx : max 
+      , 0 );
+  }
+
   kmeansPP() {
-    // Pick one randomly
-    let centroids = [this.datas[0]];
+    const randomIndex = parseInt( Math.random() * this.datas.length );
+    let centroids = [this.datas[randomIndex]];
 
     let minDistances = this.distanceTo( centroids[0] );
     for( let i=0; i < this.k-1; i++ ) {
@@ -103,8 +111,12 @@ class Kmeans {
       const distances = 
         this.min( minDistances, this.distanceTo( centroids[i] ));
       // Select new centroid based on probability proportional to size
-      const newCentroid = 
-        this.datas[this.weightedRandom( distances )];
+      let newCentroid = null;
+      if( this.usePPS ) {
+        newCentroid = this.datas[this.weightedRandom( distances )];
+      } else {
+        newCentroid = this.datas[this.indexOfMax( distances )];
+      }
 
       centroids.push( newCentroid );
       minDistances = distances;
@@ -113,16 +125,25 @@ class Kmeans {
     return centroids;
   }
 
-  fit() {
+  multipleFit( runCount ) {
+    const centroidCandidates = [];
+    for( let i=0; i < runCount; i++ ) {
+      this.fit().forEach( c => centroidCandidates.push(c) );
+    }
+
+    const centroids = this.fit({ datas: centroidCandidates });
+    return this.fit({ centroids });
+  }
+
+  fit({ centroids=this.kmeansPP(), datas=this.datas }={}) {
     // Init centroids using kmeans++
-    let centroids = this.kmeansPP();
 
     for( let iterate=0; iterate < this.max_iteration; iterate++ ) {
       
       // Generate k empty arrays
       const classifications = Array.from({length: this.k}, ()=>[]);
       // Clustering
-      this.datas.forEach( data => {
+      datas.forEach( data => {
         const {centroidIndex} = this.nearestOf( data, centroids );
         classifications[centroidIndex].push( data );
       });
