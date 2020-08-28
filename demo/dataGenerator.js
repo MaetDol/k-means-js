@@ -4,7 +4,7 @@ const option = {
   dims: 1,
   maxValue: 255,
   centerCount: 3,
-  spreads: [0.18, 0.3, 0.05],
+  spreads: [0.2, 0.3, 0.1],
   clusterDataCount: 100,
 };
 const sampleDatas = {
