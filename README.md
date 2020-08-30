@@ -1,8 +1,8 @@
 # Kmeans.js
 Simply(or not) clustering array data using kmeans.js
 
-![Draw rgb format data using D3.js](/demo/demo.jpg?raw=true "Clustered 3 Dimensional data")
-
+![Draw rgb format data using D3.js](/demo/demo.jpg?raw=true "Clustered 3 Dimensional data")\
+Above image was implemented using d3.js. You can check demo page [here](https://maetdol.github.io/demo/kmeans/index.html).
 
 ## Usage
 1 Dimensional data array
@@ -12,7 +12,10 @@ const kmeans = new Kmeans({
   k: 3,
   datas: [0, 67, 18, 62, 8, 5, 2, 9, 81, 15, 72]
 });
-console.log( kmeans.fit() );
+
+// It can be different result
+console.log( kmeans.fit() ); // [70.5, 14, 3.75]
+console.log( kmeans.multipleFit(300) ); // [4.8, 70.5, 16.5]
 ```
 
 2 Dimensional data array
