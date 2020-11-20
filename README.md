@@ -2,7 +2,7 @@
 Simply(or not) clustering array data using kmeans.js
 
 ![Draw rgb format data using D3.js](/demo/demo.jpg?raw=true "Clustered 3 Dimensional data")\
-Above image was implemented using d3.js. You can check demo page [here](https://maetdol.github.io/demo/kmeans/index.html).
+Above image was implemented using d3.js. You can check demo page [here](https://maetdol.github.io/k-means-js/demo/).
 
 ## Usage
 1 Dimensional data array
