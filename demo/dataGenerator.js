@@ -59,26 +59,37 @@ function nRandom( n, calc ) {
   return Array.from({ length: n }, () => calc( Math.random() ));
 }
 
-/*
+/**
  * @param {number} x
  * @param {number} u - mean
- * @param {number} stDev - standard deviation 
+ * @param {number} c - standard deviation(stDev)
  * @description 
  *  Normal Distribution function(maybe)
  *  Large stDev will increase of spreads
  *  u will center of ndf
+ *  https://en.wikipedia.org/wiki/Normal_distribution#General_normal_distribution
  */
 function ndf(x, u, c) {
   return (1 / (c * Math.sqrt(Math.PI*2))) 
       * Math.E**-((x-u)**2 / (2*c**2));
 }
 
+/**
+ * @param {number} max - Maximum index
+ * @description
+ *  Get standard deviation from 0 to max
+ */
 function stDev( max ) {
   const vals = Array.from( new Array(max), (_, i) => i );
   const m = mean( vals );
   return Math.sqrt( vals.reduce((a,v) => (m-v)**2 + a, 0) / vals.length );
 }
 
+/**
+ * @param {Array<number>} arr - List of numbers
+ * @description
+ *  Average of numbers
+ */
 function mean( arr ) {
   return arr.reduce((a,v) => a+v) / arr.length;
 }
