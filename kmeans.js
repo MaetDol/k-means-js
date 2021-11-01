@@ -1,4 +1,4 @@
-class Kmeans {
+export default class Kmeans {
 
   constructor({
     tolerance = 0.01,
@@ -192,5 +192,3 @@ class Kmeans {
     return nearest;
   }
 }
-
-module.exports = Kmeans;

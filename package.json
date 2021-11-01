@@ -5,10 +5,14 @@
   "repository": "https://github.com/MaetDol/k-means-js.git",
   "author": "Maetdol <rndka9@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "jest": "^26.4.1"
-  },
+  "dependencies": {},
   "scripts": {
     "test": "jest --verbose false --watch"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.16.0",
+    "babel-jest": "^27.3.1",
+    "jest": "^27.3.1"
   }
 }

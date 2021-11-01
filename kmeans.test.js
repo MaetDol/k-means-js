@@ -1,4 +1,4 @@
-const Kmeans = require('./kmeans');
+import Kmeans from './kmeans';
 
 describe('merge by min', () => {
   const kmeans = new Kmeans();

@@ -1,4 +1,4 @@
-import Kmeans from './kmeans.js';
+import Kmeans from '../kmeans.js';
 import generateDatas, { sampleDatas, sampleOption } from './dataGenerator.js';
 
 const { _1d, _2d, _3d } = sampleDatas;
