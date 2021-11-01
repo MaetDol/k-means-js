@@ -1,4 +1,4 @@
-import Kmeans from './kmeans.js';
+import Kmeans from '../kmeans.js';
 
 const option = {
   dims: 1,
