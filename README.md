@@ -7,7 +7,7 @@ Above image was implemented using d3.js. You can check demo page [here](https://
 ## Usage
 1 Dimensional data array
 ```javascript
-const Kmeans = require('./kmeans.js');
+import Kmeans from './kmeans.js';
 const kmeans = new Kmeans({
   k: 3,
   datas: [0, 67, 18, 62, 8, 5, 2, 9, 81, 15, 72]
@@ -20,7 +20,7 @@ console.log( kmeans.multipleFit(300) ); // [4.8, 70.5, 16.5]
 
 2 Dimensional data array
 ```javascript
-const Kmeans = require('./kmeans.js');
+import Kmeans from './kmeans.js';
 const kmeans = new Kmeans({
   k: 3,
   dimension: 2
@@ -35,7 +35,7 @@ console.log( kmeans.fit() );
 
 3 Dimensional data array
 ```javascript
-const Kmeans = require('./kmeans.js');
+import Kmeans from './kmeans.js';
 const kmeans = new Kmeans({
   k: 3,
   dimension: 3
