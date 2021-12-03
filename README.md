@@ -23,7 +23,7 @@ console.log( kmeans.multipleFit(300) ); // [4.8, 70.5, 16.5]
 import Kmeans from './kmeans.js';
 const kmeans = new Kmeans({
   k: 3,
-  dimension: 2
+  dimension: 2,
   datas: [
     [3, 21], [5, 16], [8, 19],
     [12, 65], [24, 68], [18, 72],
@@ -38,7 +38,7 @@ console.log( kmeans.fit() );
 import Kmeans from './kmeans.js';
 const kmeans = new Kmeans({
   k: 3,
-  dimension: 3
+  dimension: 3,
   datas: [
     [3, 21, 8], [5, 16, 3], [8, 19, 6],
     [14, 20, 36], [15, 21, 35], [16, 18, 32],
