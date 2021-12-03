@@ -1,5 +1,5 @@
 import Kmeans from '../kmeans.js';
-import generateDatas, { sampleDatas, sampleOption } from './dataGenerator.js';
+import { sampleDatas, sampleOption } from './dataGenerator.js';
 
 const { _1d, _2d, _3d } = sampleDatas;
 console.log( sampleOption );
@@ -26,7 +26,7 @@ console.groupCollapsed('1d');
 const centroids1D = kmeans1D.fit();
 console.groupEnd('1d');
 
-document.body.append( scatterplot({
+element('.dimension-1').append( scatterplot({
   srcData: _1d.datas,
   centroids: centroids1D.map( v => [v] ),
   width: 500,
@@ -49,7 +49,7 @@ console.groupCollapsed('2d');
 const centroids2D = kmeans2D.multipleFit(200);
 console.groupEnd('2d');
 
-document.body.append( scatterplot({
+element('.dimension-2').append( scatterplot({
   srcData: _2d.datas,
   centroids: centroids2D,
   width: 500,
@@ -72,7 +72,7 @@ const centroids3D = kmeans3D.multipleFit(200);
 console.log(centroids3D);
 console.groupEnd('3d');
 
-document.body.append( scatterplot({
+element('.dimension-3').append( scatterplot({
   srcData: _3d.datas,
   centroids: centroids3D,
   width: 500,
@@ -223,5 +223,7 @@ Element.prototype.isChildOf = function( tag ) {
   return false;
 };
 
-
+function element( s ) {
+  return document.querySelector( s );
+}
 
