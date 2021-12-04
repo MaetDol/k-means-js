@@ -65,8 +65,11 @@ describe('clurstering single dimensional', () => {
   it('Little datas', () => {
     kmeans.datas = [3, 1, 7, 9, 0, 2, 13, 5, 10];
     global.Math.random = () => 0.7;
-    const centroids = kmeans.fit().map( c => parseFloat(c.toFixed(2)) );
-    expect( centroids ).toStrictEqual([4.25, 10.67, 0.50]);
+    const centroids = kmeans
+      .fit()
+      .map( c => parseFloat(c.toFixed(2)) )
+      .sort( (c1, c2) => c1 - c2 );
+    expect( centroids ).toStrictEqual([1, 5, 10.67]);
   });
 });
 
@@ -78,11 +81,14 @@ describe('clurstering 2 dimensional', () => {
   it('Little datas', () => {
     kmeans.datas = [[0,1],[3,2],[2,2],[2,10],[4,8],[1,9],[9,9],[8,7],[12,11]];
     global.Math.random = () => 0.6;
-    const centroids = kmeans.fit().map(([x,y]) => [parseFloat(x.toFixed(2)), parseFloat(y.toFixed(2))] );
+    const centroids = kmeans
+      .fit()
+      .map(([x,y]) => [parseFloat(x.toFixed(2)), parseFloat(y.toFixed(2))] )
+      .sort(([x1], [x2]) => x1 - x2);
     expect( centroids ).toStrictEqual([
       [1.67, 1.67],
+      [2.33, 9.00],
       [9.67, 9.00],
-      [2.33, 9.00]
     ]);
   });
 });
@@ -104,11 +110,11 @@ describe('clustering 3 dimensional', () => {
       parseFloat( x.toFixed(2) ),
       parseFloat( y.toFixed(2) ),
       parseFloat( z.toFixed(2) ),
-    ]);
+    ]).sort(([x1], [x2]) => x1 - x2);
     expect( centroids ).toStrictEqual([
+      [ 0.50, 16.50, 5.00],
       [ 2.67,  4.67, 1.33],
       [14.29, 10.29, 9.57],
-      [ 0.50, 16.50, 5.00],
     ]);
   });
 });
