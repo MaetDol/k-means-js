@@ -136,7 +136,8 @@ export default class Kmeans {
   }
 
   fit({ centroids=this.kmeansPP(), datas=this.datas }={}) {
-    if( !datas.flat().length ) throw new Error('Empty data is not valid. Please provide datas');
+    this.datas = datas; 
+    if( !(datas instanceof Array) || !datas.flat().length ) throw new Error('Empty data is not valid. Please provide datas');
 
     // Init centroids using kmeans++
     for( let iterate=0; iterate < this.max_iteration; iterate++ ) {
