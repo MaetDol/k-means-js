@@ -136,8 +136,9 @@ export default class Kmeans {
   }
 
   fit({ centroids=this.kmeansPP(), datas=this.datas }={}) {
-    // Init centroids using kmeans++
+    if( !datas.flat().length ) throw new Error('Empty data is not valid. Please provide datas');
 
+    // Init centroids using kmeans++
     for( let iterate=0; iterate < this.max_iteration; iterate++ ) {
       
       // Generate k empty arrays
@@ -173,11 +174,14 @@ export default class Kmeans {
   }
 
   average( arr ) {
-    let length = arr.length;
-    if( this.dims !== 1 ) {
-      length = Array.from( this.ZERO_POINT, ()=> arr.length );
-    }
-    return this.divider( arr.reduce((sum, val) => this.add( sum, val )), length );
+    const length = this.dims === 1 
+      ? arr.length
+      : Array.from( this.ZERO_POINT, () => arr.length );
+
+    return this.divider( 
+      arr.reduce( this.add ),
+      length,
+    );
   }
 
   nearestOf( data, centroids ) {
