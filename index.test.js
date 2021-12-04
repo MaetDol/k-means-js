@@ -1,4 +1,4 @@
-import Kmeans from './kmeans';
+import Kmeans from './index.js';
 
 describe('merge by min', () => {
   const kmeans = new Kmeans();
