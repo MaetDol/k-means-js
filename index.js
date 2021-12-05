@@ -148,6 +148,7 @@ export default class Kmeans {
       
       // Generate k empty arrays
       const classifications = Array.from({length: this.k}, ()=>[]);
+      this.classifications = classifications;
       // Clustering
       datas.forEach( data => {
         const {centroidIndex} = this.nearestOf( data, centroids );
