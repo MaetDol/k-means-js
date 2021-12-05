@@ -157,7 +157,11 @@ export default class Kmeans {
       let inTolerance = true;
       const previousCentroids = [...centroids];
       // Assign centroids as average of cluster
-      centroids = classifications.map( cls => this.average( cls ));
+      centroids = classifications.map( (cls, i) => {
+        return cls.length 
+          ? this.average( cls )
+          : centroids[i];
+      });
 
       for( let i=0; i < previousCentroids.length; i++ ) {
         const difference = this.difference( previousCentroids[i], centroids[i] );
