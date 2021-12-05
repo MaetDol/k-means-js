@@ -87,12 +87,16 @@ export default class Kmeans {
     const weightsSum = this.sum( weights ),
           r = Math.random();
     let sum = 0;
+
+    if( weightsSum === 0 ) return 0;
+
     for( let i=0; i < weights.length; i++ ) {
       sum += weights[i] / weightsSum;
       if( r <= sum ) {
         return i;
       }
     }
+    return sum / weights.length;
   }
 
   indexOfMax( arr ) {
