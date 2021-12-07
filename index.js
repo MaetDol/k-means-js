@@ -87,12 +87,16 @@ export default class Kmeans {
     const weightsSum = this.sum( weights ),
           r = Math.random();
     let sum = 0;
+
+    if( weightsSum === 0 ) return 0;
+
     for( let i=0; i < weights.length; i++ ) {
       sum += weights[i] / weightsSum;
       if( r <= sum ) {
         return i;
       }
     }
+    return sum / weights.length;
   }
 
   indexOfMax( arr ) {
@@ -146,6 +150,7 @@ export default class Kmeans {
       
       // Generate k empty arrays
       const classifications = Array.from({length: this.k}, ()=>[]);
+      this.classifications = classifications;
       // Clustering
       datas.forEach( data => {
         const {centroidIndex} = this.nearestOf( data, centroids );
@@ -155,7 +160,11 @@ export default class Kmeans {
       let inTolerance = true;
       const previousCentroids = [...centroids];
       // Assign centroids as average of cluster
-      centroids = classifications.map( cls => this.average( cls ));
+      centroids = classifications.map( (cls, i) => {
+        return cls.length 
+          ? this.average( cls )
+          : centroids[i];
+      });
 
       for( let i=0; i < previousCentroids.length; i++ ) {
         const difference = this.difference( previousCentroids[i], centroids[i] );
