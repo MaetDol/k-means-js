@@ -130,13 +130,16 @@ export default class Kmeans {
   }
 
   multipleFit( runCount ) {
+    const datas = this.datas;
     const centroidCandidates = [];
     for( let i=0; i < runCount; i++ ) {
       this.fit().forEach( c => centroidCandidates.push(c) );
     }
 
-    const centroids = this.fit({ datas: centroidCandidates });
-    return this.fit({ centroids });
+    return this.fit({ 
+      centroids: this.fit({ datas: centroidCandidates }), 
+      datas,
+    });
   }
 
   fit({ centroids, datas=this.datas }={}) {
