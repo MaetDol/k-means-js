@@ -149,13 +149,10 @@ export default class Kmeans {
     for( let iterate=0; iterate < this.max_iteration; iterate++ ) {
       
       // Generate k empty arrays
-      const classifications = Array.from({length: this.k}, ()=>[]);
-      this.classifications = classifications;
       // Clustering
-      datas.forEach( data => {
-        const {centroidIndex} = this.nearestOf( data, centroids );
-        classifications[centroidIndex].push( data );
-      });
+      const classifications = 
+        this.classifications = 
+        this.classify( centroids );
 
       let inTolerance = true;
       const previousCentroids = [...centroids];
