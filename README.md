@@ -50,3 +50,20 @@ console.log( kmeans.fit() );
 
 If you does not matter on performance critical, recommend use `kmeans.multipleFit( n )`.
 It runs `kmeans.fit` but `n` times. It helps initialize better.
+
+### Access to clursted datas
+```javascript
+import Kmeans from './kmeans.js';
+const kmeans = new Kmeans({ k: 3 });
+const datas = [0, 67, 18, 62, 8, 5, 2, 9, 81, 15, 72];
+kmeans.fit({ datas });
+console.log( kmeans.classifications );
+/*
+  [
+    [18, 9, 15],
+    [67, 62, 81, 72],
+    [0, 8, 5, 2 ]
+  ]
+*/
+```
+It ordered by cluster it result of fit
