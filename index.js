@@ -181,6 +181,16 @@ export default class Kmeans {
     return centroids;
   }
 
+  classify( centroids ) {
+    const classifications = Array.from( {length: this.k}, () => [] );
+    this.datas.forEach( data => {
+      const { centroidIndex } = this.nearestOf( data, centroids );
+      classifications[centroidIndex].push( data );
+    });
+
+    return classifications;
+  }
+
   difference( data1, data2 ) {
     return this.sub( data1, data2 ) / this.maxData * 100;
   }
